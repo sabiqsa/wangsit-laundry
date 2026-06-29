@@ -21,6 +21,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import SettingsIcon from "@mui/icons-material/Settings";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocalLaundryServiceIcon from "@mui/icons-material/LocalLaundryService";
 import NextLink from "next/link";
@@ -33,13 +34,14 @@ const DRAWER_WIDTH = 240;
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: <DashboardIcon /> },
   { label: "Kelola Order", href: "/admin/orders", icon: <ListAltIcon /> },
+  { label: "Promo", href: "/admin/promos", icon: <LocalOfferIcon /> },
   { label: "Laporan", href: "/admin/reports", icon: <BarChartIcon /> },
   { label: "Pengaturan", href: "/admin/settings", icon: <SettingsIcon /> },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"), { noSsr: true });
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 

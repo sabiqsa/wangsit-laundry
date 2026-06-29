@@ -21,6 +21,7 @@
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "bcryptjs": "^3.0.3",
+    "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
     "midtrans-client": "^1.4.3",
     "mongoose": "^9.7.0",

@@ -4,6 +4,7 @@ export type OrderService = "cuciLipat" | "setrika" | "cuciSetrika";
 export type OrderStatus = "Pending" | "Proses" | "Selesai" | "Lunas";
 export type PaymentStatus = "unpaid" | "paid" | "pending";
 export type PaymentMethod = "bayar_sekarang" | "bayar_nanti";
+export type DeliveryType = "jemput_antar" | "ambil_sendiri";
 
 export interface IOrderDocument extends Document {
   orderNumber: string;
@@ -12,10 +13,17 @@ export interface IOrderDocument extends Document {
   clientPhone?: string;
   services: OrderService[];
   kg: number;
+  actualKg?: number;
+  kgConfirmed: boolean;
+  kgPhotoUrl?: string;
   totalPrice: number;
+  discountAmount: number;
+  promoCode?: string;
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
   paymentMethod: PaymentMethod;
+  deliveryType: DeliveryType;
+  deliveryAddress?: string;
   midtransOrderId?: string;
   midtransToken?: string;
   estimatedCompletion: string;
@@ -52,6 +60,17 @@ const OrderSchema = new Schema<IOrderDocument>(
       enum: ["bayar_sekarang", "bayar_nanti"],
       required: true,
     },
+    deliveryType: {
+      type: String,
+      enum: ["jemput_antar", "ambil_sendiri"],
+      default: "ambil_sendiri",
+    },
+    deliveryAddress: { type: String },
+    actualKg: { type: Number },
+    kgConfirmed: { type: Boolean, default: false },
+    kgPhotoUrl: { type: String },
+    discountAmount: { type: Number, default: 0 },
+    promoCode: { type: String },
     midtransOrderId: { type: String },
     midtransToken: { type: String },
     estimatedCompletion: { type: String, required: true },

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   AppBar,
   Avatar,
@@ -21,6 +22,9 @@ import { useSession, signOut } from "next-auth/react";
 export function Navbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   if (pathname.startsWith("/admin")) return null;
 
@@ -41,7 +45,7 @@ export function Navbar() {
           Wangsit Laundry
         </Typography>
 
-        {status === "loading" ? null : !user ? (
+        {!mounted || status === "loading" ? null : !user ? (
           <Button component={NextLink} href="/auth/login" variant="contained" size="small">
             Login
           </Button>

@@ -30,6 +30,8 @@ import { OrderTableSkeleton } from "@/components/skeletons/OrderTableSkeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { IOrder, ORDER_STATUS_LABELS, SERVICE_LABELS } from "@/types/models";
 import { StatusUpdateDialog } from "./StatusUpdateDialog";
+import { ConfirmKgDialog } from "./ConfirmKgDialog";
+import ScaleIcon from "@mui/icons-material/Scale";
 
 const STATUS_COLOR: Record<string, "warning" | "info" | "success" | "default"> = {
   Pending: "warning",
@@ -42,6 +44,7 @@ export function OrderTable() {
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [kgOrder, setKgOrder] = useState<IOrder | null>(null);
   const [toast, setToast] = useState<{ message: string; severity: "success" | "error" } | null>(null);
   const [pendingWhatsApp, setPendingWhatsApp] = useState<string | null>(null);
 
@@ -135,6 +138,13 @@ export function OrderTable() {
                           <EditIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
+                      {order.deliveryType === "jemput_antar" && !order.kgConfirmed && (
+                        <Tooltip title="Konfirmasi Berat">
+                          <IconButton size="small" color="warning" onClick={() => setKgOrder(order)}>
+                            <ScaleIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
                       {order.clientPhone && (
                         <Tooltip title="Kirim WhatsApp">
                           <IconButton
@@ -169,6 +179,15 @@ export function OrderTable() {
             color="primary"
           />
         </Box>
+      )}
+
+      {kgOrder && (
+        <ConfirmKgDialog
+          order={kgOrder}
+          open={!!kgOrder}
+          onClose={() => setKgOrder(null)}
+          onSuccess={() => { mutate(); setKgOrder(null); }}
+        />
       )}
 
       {selectedOrder && (

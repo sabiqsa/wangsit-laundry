@@ -22,8 +22,10 @@ export function ReceiptActions({ order, contentRef, adminPhone }: ReceiptActions
     documentTitle: `Struk-${order.orderNumber}`,
   });
 
-  const handleDownloadPDF = () => {
-    generateReceiptPDF(order);
+  const handleDownloadPDF = async () => {
+    if (contentRef.current) {
+      await generateReceiptPDF(contentRef.current, order.orderNumber);
+    }
   };
 
   const handleWhatsApp = () => {

@@ -13,6 +13,12 @@ export const settingsSchema = z.object({
   }),
   adminPhone: z.string().min(10, "Nomor WhatsApp tidak valid"),
   storeName: z.string().min(1, "Nama toko wajib diisi"),
+  storeHours: z.object({
+    open: z.string().min(1, "Jam buka wajib diisi"),
+    close: z.string().min(1, "Jam tutup wajib diisi"),
+  }),
+  deliveryFee: z.number().min(0, "Ongkir tidak boleh negatif"),
+  deliveryEnabled: z.boolean(),
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;

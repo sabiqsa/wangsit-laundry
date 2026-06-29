@@ -12,11 +12,19 @@ export interface IEstimatedTime {
   cuciSetrika: string;
 }
 
+export interface IStoreHours {
+  open: string;
+  close: string;
+}
+
 export interface ISettingsDocument extends Document {
   pricing: IPricing;
   estimatedTime: IEstimatedTime;
   adminPhone: string;
   storeName: string;
+  storeHours: IStoreHours;
+  deliveryFee: number;
+  deliveryEnabled: boolean;
   updatedAt: Date;
 }
 
@@ -34,6 +42,12 @@ const SettingsSchema = new Schema<ISettingsDocument>(
     },
     adminPhone: { type: String, default: process.env.ADMIN_PHONE || "6281234567890" },
     storeName: { type: String, default: "Wangsit Laundry" },
+    storeHours: {
+      open: { type: String, default: "08:00" },
+      close: { type: String, default: "20:00" },
+    },
+    deliveryFee: { type: Number, default: 5000 },
+    deliveryEnabled: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

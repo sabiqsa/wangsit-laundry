@@ -9,14 +9,17 @@ import {
   Button,
   CircularProgress,
   Divider,
+  FormControlLabel,
   Grid,
   InputAdornment,
   Snackbar,
+  Switch,
   TextField,
   Typography,
 } from "@mui/material";
 import { settingsSchema, SettingsInput } from "@/schemas/settings.schema";
 import { useSettings } from "@/hooks/useSettings";
+import { Controller } from "react-hook-form";
 
 export function SettingsForm() {
   const { settings, mutate } = useSettings();
@@ -27,6 +30,7 @@ export function SettingsForm() {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<SettingsInput>({
     resolver: zodResolver(settingsSchema),
@@ -39,6 +43,9 @@ export function SettingsForm() {
         estimatedTime: settings.estimatedTime,
         adminPhone: settings.adminPhone,
         storeName: settings.storeName,
+        storeHours: settings.storeHours ?? { open: "08:00", close: "20:00" },
+        deliveryFee: settings.deliveryFee ?? 5000,
+        deliveryEnabled: settings.deliveryEnabled ?? true,
       });
     }
   }, [settings, reset]);
@@ -133,6 +140,57 @@ export function SettingsForm() {
             />
           </Grid>
         ))}
+      </Grid>
+
+      <Divider sx={{ mb: 3 }} />
+
+      <Typography variant="h6" mb={2}>Jam Operasional & Layanan Antar</Typography>
+      <Grid container spacing={2} mb={3}>
+        <Grid item xs={6} sm={3}>
+          <TextField
+            {...register("storeHours.open")}
+            label="Jam Buka"
+            type="time"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            error={!!errors.storeHours?.open}
+            helperText={errors.storeHours?.open?.message}
+          />
+        </Grid>
+        <Grid item xs={6} sm={3}>
+          <TextField
+            {...register("storeHours.close")}
+            label="Jam Tutup"
+            type="time"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            error={!!errors.storeHours?.close}
+            helperText={errors.storeHours?.close?.message}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            {...register("deliveryFee", { valueAsNumber: true })}
+            label="Ongkir Jemput & Antar"
+            type="number"
+            fullWidth
+            InputProps={{ startAdornment: <InputAdornment position="start">Rp</InputAdornment> }}
+            error={!!errors.deliveryFee}
+            helperText={errors.deliveryFee?.message}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3} display="flex" alignItems="center">
+          <Controller
+            name="deliveryEnabled"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Switch checked={field.value} onChange={field.onChange} />}
+                label="Layanan Antar Aktif"
+              />
+            )}
+          />
+        </Grid>
       </Grid>
 
       <Button

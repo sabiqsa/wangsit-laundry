@@ -70,15 +70,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
         token.role = (user as { role: "admin" | "client" }).role;
+        await connectDB();
+        const dbUser = await User.findOne({ email: token.email });
+        if (dbUser) token.phone = dbUser.phone;
       }
 
-      // Refresh role from DB on every sign-in
       if (!token.role) {
         await connectDB();
         const dbUser = await User.findOne({ email: token.email });
         if (dbUser) {
           token.id = dbUser._id.toString();
           token.role = dbUser.role;
+          token.phone = dbUser.phone;
         }
       }
 
@@ -88,6 +91,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;
+        session.user.phone = token.phone;
       }
       return session;
     },
