@@ -77,7 +77,7 @@ export function Navbar() {
               </Tooltip>
             )}
             <Tooltip title="Keluar">
-              <IconButton size="small" onClick={() => signOut({ callbackUrl: "/" })}>
+              <IconButton size="small" onClick={() => signOut({ callbackUrl: window.location.origin + "/" })}>
                 <LogoutIcon fontSize="small" />
               </IconButton>
             </Tooltip>

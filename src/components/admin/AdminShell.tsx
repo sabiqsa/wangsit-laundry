@@ -68,7 +68,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </ListItem>
         ))}
         <ListItem disablePadding>
-          <ListItemButton onClick={() => signOut({ callbackUrl: "/auth/login" })}>
+          <ListItemButton onClick={() => signOut({ callbackUrl: window.location.origin + "/auth/login" })}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
