@@ -135,6 +135,7 @@ export function SettingsForm() {
               label={item.label}
               fullWidth
               placeholder="contoh: 2-3 hari"
+              InputLabelProps={{ shrink: true }}
               error={!!errors.estimatedTime?.[item.key.split(".")[1] as "cuciLipat" | "setrika" | "cuciSetrika"]}
               helperText={(errors.estimatedTime?.[item.key.split(".")[1] as "cuciLipat" | "setrika" | "cuciSetrika"] as { message?: string })?.message}
             />

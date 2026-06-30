@@ -66,6 +66,9 @@ export function OrderForm() {
       kg: 1,
       paymentMethod: "bayar_nanti",
       deliveryType: "ambil_sendiri",
+      deliveryAddress: "",
+      promoCode: "",
+      notes: "",
     },
   });
 
@@ -174,6 +177,8 @@ export function OrderForm() {
         <TextField
           {...register("clientName")}
           label="Nama Lengkap"
+          placeholder="Nama lengkap Anda"
+          InputLabelProps={{ shrink: true }}
           fullWidth
           margin="normal"
           error={!!errors.clientName}

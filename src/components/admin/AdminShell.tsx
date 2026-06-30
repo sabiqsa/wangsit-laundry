@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -41,8 +41,12 @@ const navItems = [
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobileQuery = useMediaQuery(theme.breakpoints.down("md"));
+  const [mounted, setMounted] = useState(false);
+  const isMobile = mounted && isMobileQuery;
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => setMounted(true), []);
   const pathname = usePathname();
 
   const drawerContent = (

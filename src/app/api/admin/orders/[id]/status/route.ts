@@ -39,7 +39,11 @@ export async function PATCH(
     }
 
     if (orderStatus) order.orderStatus = orderStatus;
-    if (paymentStatus) order.paymentStatus = paymentStatus;
+    if (paymentStatus) {
+      order.paymentStatus = paymentStatus;
+    } else if (orderStatus === "Lunas") {
+      order.paymentStatus = "paid";
+    }
     await order.save();
 
     const orderObj = order.toObject();

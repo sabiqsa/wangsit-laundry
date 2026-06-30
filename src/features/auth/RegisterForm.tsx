@@ -91,6 +91,7 @@ export function RegisterForm() {
         error={!!errors.phone}
         helperText={errors.phone?.message}
         placeholder="contoh: 081234567890"
+        InputLabelProps={{ shrink: true }}
       />
 
       <TextField

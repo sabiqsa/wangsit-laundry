@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Box,
@@ -111,7 +111,11 @@ export default function HomePage() {
           <Grid container spacing={3}>
             {[
               {
-                icon: <LocalLaundryServiceIcon sx={{ fontSize: 48, color: '#0071e3' }} />,
+                icon: (
+                  <LocalLaundryServiceIcon
+                    sx={{ fontSize: 48, color: '#0071e3' }}
+                  />
+                ),
                 title: 'Cuci Lipat',
                 desc: 'Cucian bersih, wangi, dan dilipat rapi untuk Anda.',
               },
@@ -121,21 +125,44 @@ export default function HomePage() {
                 desc: 'Pakaian rapi bebas kusut, siap dipakai.',
               },
               {
-                icon: <LocalLaundryServiceIcon sx={{ fontSize: 48, color: '#0071e3' }} />,
+                icon: (
+                  <LocalLaundryServiceIcon
+                    sx={{ fontSize: 48, color: '#0071e3' }}
+                  />
+                ),
                 title: 'Cuci + Setrika',
                 desc: 'Paket lengkap cuci, setrika, dan lipat.',
               },
             ].map((item) => (
               <Grid item xs={12} sm={4} key={item.title}>
-                <Card sx={{ textAlign: 'center', p: 2, height: '100%', bgcolor: '#ffffff' }}>
+                <Card
+                  sx={{
+                    textAlign: 'center',
+                    p: 2,
+                    height: '100%',
+                    bgcolor: '#ffffff',
+                  }}
+                >
                   <CardContent>
                     {item.icon}
                     <Typography
-                      sx={{ fontWeight: 700, mt: 2, color: '#1d1d1f', fontSize: '19px' }}
+                      sx={{
+                        fontWeight: 700,
+                        mt: 2,
+                        color: '#1d1d1f',
+                        fontSize: '19px',
+                      }}
                     >
                       {item.title}
                     </Typography>
-                    <Typography sx={{ color: '#6e6e73', mt: 1, fontSize: '15px', lineHeight: 1.5 }}>
+                    <Typography
+                      sx={{
+                        color: '#6e6e73',
+                        mt: 1,
+                        fontSize: '15px',
+                        lineHeight: 1.5,
+                      }}
+                    >
                       {item.desc}
                     </Typography>
                   </CardContent>
@@ -185,11 +212,21 @@ export default function HomePage() {
                   }}
                 >
                   <CardContent>
-                    <TrackChangesIcon sx={{ fontSize: 40, color: '#0071e3', mb: 1 }} />
-                    <Typography sx={{ fontWeight: 700, fontSize: '19px', color: '#1d1d1f' }}>
+                    <TrackChangesIcon
+                      sx={{ fontSize: 40, color: '#0071e3', mb: 1 }}
+                    />
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        fontSize: '19px',
+                        color: '#1d1d1f',
+                      }}
+                    >
                       Lacak Order
                     </Typography>
-                    <Typography sx={{ color: '#6e6e73', mt: 0.5, fontSize: '15px' }}>
+                    <Typography
+                      sx={{ color: '#6e6e73', mt: 0.5, fontSize: '15px' }}
+                    >
                       Cek status cucian tanpa login
                     </Typography>
                   </CardContent>
@@ -208,11 +245,21 @@ export default function HomePage() {
                   }}
                 >
                   <CardContent>
-                    <HistoryIcon sx={{ fontSize: 40, color: '#0071e3', mb: 1 }} />
-                    <Typography sx={{ fontWeight: 700, fontSize: '19px', color: '#1d1d1f' }}>
+                    <HistoryIcon
+                      sx={{ fontSize: 40, color: '#0071e3', mb: 1 }}
+                    />
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        fontSize: '19px',
+                        color: '#1d1d1f',
+                      }}
+                    >
                       Riwayat Order
                     </Typography>
-                    <Typography sx={{ color: '#6e6e73', mt: 0.5, fontSize: '15px' }}>
+                    <Typography
+                      sx={{ color: '#6e6e73', mt: 0.5, fontSize: '15px' }}
+                    >
                       Lihat semua order Anda
                     </Typography>
                   </CardContent>
@@ -234,7 +281,7 @@ export default function HomePage() {
         }}
       >
         <Typography sx={{ color: '#6e6e73', fontSize: '13px' }}>
-          © 2024 Wangsit Laundry. Semua hak dilindungi.
+          © {new Date().getFullYear()} Wangsit Laundry - Semua hak dilindungi.
         </Typography>
       </Box>
     </Box>

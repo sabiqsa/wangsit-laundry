@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -9,6 +9,7 @@ import {
   Chip,
 } from "@mui/material";
 import LocalLaundryServiceIcon from "@mui/icons-material/LocalLaundryService";
+import { QRCodeSVG } from "qrcode.react";
 import { IOrder, SERVICE_LABELS, ORDER_STATUS_LABELS } from "@/types/models";
 
 interface ReceiptCardProps {
@@ -17,6 +18,13 @@ interface ReceiptCardProps {
 
 export const ReceiptCard = forwardRef<HTMLDivElement, ReceiptCardProps>(
   ({ order }, ref) => {
+    const [trackUrl, setTrackUrl] = useState("");
+
+    useEffect(() => {
+      const base = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+      setTrackUrl(`${base}/track?orderNumber=${order.orderNumber}`);
+    }, [order.orderNumber]);
+
     const statusColor: Record<string, "warning" | "info" | "success" | "default"> = {
       Pending: "warning",
       Proses: "info",
@@ -129,6 +137,15 @@ export const ReceiptCard = forwardRef<HTMLDivElement, ReceiptCardProps>(
         <Typography variant="caption" color="text.secondary" textAlign="center" display="block">
           Terima kasih telah menggunakan layanan Wangsit Laundry! 🧺
         </Typography>
+
+        {trackUrl && (
+          <Box display="flex" flexDirection="column" alignItems="center" mt={2} gap={0.5}>
+            <QRCodeSVG value={trackUrl} size={100} level="M" />
+            <Typography variant="caption" color="text.secondary" textAlign="center">
+              Scan untuk lacak status order
+            </Typography>
+          </Box>
+        )}
       </Paper>
     );
   }

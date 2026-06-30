@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Alert,
   Box,
@@ -25,20 +26,22 @@ const STATUS_COLOR: Record<string, "warning" | "info" | "success" | "default"> =
   Lunas: "default",
 };
 
-export default function TrackPage() {
+function TrackPageContent() {
+  const searchParams = useSearchParams();
   const [orderNumber, setOrderNumber] = useState("");
   const [order, setOrder] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleTrack = async () => {
-    if (!orderNumber.trim()) return;
+  const handleTrack = async (num?: string) => {
+    const query = (num ?? orderNumber).trim();
+    if (!query) return;
     setLoading(true);
     setError("");
     setOrder(null);
 
     try {
-      const res = await fetch(`/api/orders/track?orderNumber=${encodeURIComponent(orderNumber.trim())}`);
+      const res = await fetch(`/api/orders/track?orderNumber=${encodeURIComponent(query)}`);
       const result = await res.json();
 
       if (result.success) {
@@ -52,6 +55,25 @@ export default function TrackPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const num = searchParams.get("orderNumber");
+    if (!num) return;
+
+    setOrderNumber(num);
+    setLoading(true);
+    setError("");
+
+    fetch(`/api/orders/track?orderNumber=${encodeURIComponent(num)}`)
+      .then((r) => r.json())
+      .then((result) => {
+        if (result.success) setOrder(result.data);
+        else setError("Order tidak ditemukan. Periksa kembali nomor order Anda.");
+      })
+      .catch(() => setError("Terjadi kesalahan. Coba lagi."))
+      .finally(() => setLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container maxWidth="sm" sx={{ py: 4 }}>
@@ -71,13 +93,14 @@ export default function TrackPage() {
           onChange={(e) => setOrderNumber(e.target.value)}
           label="Nomor Order"
           placeholder="contoh: WNG-20240101-0001"
+          InputLabelProps={{ shrink: true }}
           fullWidth
           onKeyDown={(e) => e.key === "Enter" && handleTrack()}
           size="small"
         />
         <Button
           variant="contained"
-          onClick={handleTrack}
+          onClick={() => handleTrack()}
           disabled={loading || !orderNumber.trim()}
           startIcon={loading ? <CircularProgress size={18} /> : <SearchIcon />}
           sx={{ minWidth: 120 }}
@@ -141,5 +164,13 @@ export default function TrackPage() {
         </Card>
       )}
     </Container>
+  );
+}
+
+export default function TrackPage() {
+  return (
+    <Suspense>
+      <TrackPageContent />
+    </Suspense>
   );
 }

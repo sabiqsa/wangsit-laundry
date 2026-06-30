@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
       {
         $match: {
           createdAt: { $gte: startDate },
-          paymentStatus: { $in: ["paid"] },
+          $or: [{ paymentStatus: "paid" }, { orderStatus: "Lunas" }],
         },
       },
       {
@@ -55,7 +55,13 @@ export async function GET(req: NextRequest) {
         $group: {
           _id: null,
           totalRevenue: {
-            $sum: { $cond: [{ $eq: ["$paymentStatus", "paid"] }, "$totalPrice", 0] },
+            $sum: {
+              $cond: [
+                { $or: [{ $eq: ["$paymentStatus", "paid"] }, { $eq: ["$orderStatus", "Lunas"] }] },
+                "$totalPrice",
+                0,
+              ],
+            },
           },
           totalOrders: { $sum: 1 },
           pendingOrders: {
