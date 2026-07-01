@@ -32,7 +32,7 @@ export function Navbar() {
   const isAdmin = user?.role === "admin";
 
   return (
-    <AppBar position="sticky" color="default" elevation={0} sx={{ borderBottom: "1px solid", borderColor: "divider", bgcolor: "background.paper" }}>
+    <AppBar position="sticky" color="default" elevation={0} sx={{ display: { xs: "none", md: "flex" }, borderBottom: "1px solid", borderColor: "divider", bgcolor: "background.paper" }}>
       <Toolbar sx={{ gap: 1 }}>
         <LocalLaundryServiceIcon color="primary" />
         <Typography

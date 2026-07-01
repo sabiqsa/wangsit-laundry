@@ -1,25 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn, getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import {
-  Box,
-  Button,
-  Divider,
-  TextField,
-  Typography,
-  Alert,
-  InputAdornment,
-  IconButton,
-  CircularProgress,
-} from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import GoogleIcon from "@mui/icons-material/Google";
-import { loginSchema, LoginInput } from "@/schemas/auth.schema";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { loginSchema, LoginInput } from '@/schemas/auth.schema';
 
 interface LoginFormProps {
   isAdmin?: boolean;
@@ -27,9 +13,8 @@ interface LoginFormProps {
 
 export function LoginForm({ isAdmin = false }: LoginFormProps) {
   const router = useRouter();
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const {
     register,
@@ -40,101 +25,89 @@ export function LoginForm({ isAdmin = false }: LoginFormProps) {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    setError("");
-    const result = await signIn("credentials", {
+    setError('');
+    const result = await signIn('credentials', {
       email: data.email,
       password: data.password,
       redirect: false,
     });
 
     if (result?.error) {
-      setError("Email atau password salah");
+      setError('Email atau password salah');
       return;
     }
 
     const session = await getSession();
-    router.push(session?.user?.role === "admin" ? "/admin" : "/");
-  };
-
-  const handleGoogleSignIn = async () => {
-    setIsGoogleLoading(true);
-    await signIn("google", { callbackUrl: "/" });
+    router.push(session?.user?.role === 'admin' ? '/admin' : '/');
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      className="flex flex-col gap-4"
+    >
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <div className="bg-red-100 border border-red-300 text-red-700 text-sm px-4 py-2 rounded-xl">
           {error}
-        </Alert>
+        </div>
       )}
 
-      <TextField
-        {...register("email")}
-        label="Email"
-        type="email"
-        fullWidth
-        margin="normal"
-        error={!!errors.email}
-        helperText={errors.email?.message}
-        autoComplete="email"
-      />
+      {/* Email/Username input */}
+      <div>
+        <input
+          {...register('email')}
+          type="email"
+          placeholder="Nomor Telepon, Username or Email"
+          autoComplete="email"
+          className="w-full px-5 py-3.5 rounded-full bg-white text-gray-700 placeholder-gray-400 text-sm outline-none focus:ring-2 focus:ring-blue-400 shadow-sm"
+        />
+        {errors.email && (
+          <p className="text-red-200 text-xs mt-1 ml-4">
+            {errors.email.message}
+          </p>
+        )}
+      </div>
 
-      <TextField
-        {...register("password")}
-        label="Password"
-        type={showPassword ? "text" : "password"}
-        fullWidth
-        margin="normal"
-        error={!!errors.password}
-        helperText={errors.password?.message}
-        autoComplete="current-password"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() => setShowPassword((v) => !v)}
-                edge="end"
-                aria-label="toggle password visibility"
-              >
-                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
+      {/* Password input */}
+      <div className="relative">
+        <input
+          {...register('password')}
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Password"
+          autoComplete="current-password"
+          className="w-full px-5 py-3.5 rounded-full bg-white text-gray-700 placeholder-gray-400 text-sm outline-none focus:ring-2 focus:ring-blue-400 shadow-sm pr-12"
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword((v) => !v)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+          aria-label="toggle password visibility"
+        >
+          {showPassword ? 'Hide' : 'Show'}
+        </button>
+        {errors.password && (
+          <p className="text-red-200 text-xs mt-1 ml-4">
+            {errors.password.message}
+          </p>
+        )}
+      </div>
 
-      <Button
+      {/* Log In button */}
+      <button
         type="submit"
-        variant="contained"
-        fullWidth
-        size="large"
         disabled={isSubmitting}
-        sx={{ mt: 2 }}
+        className="w-full py-3.5 rounded-full font-bold text-white text-sm mt-1 flex items-center justify-center gap-2 disabled:opacity-70 transition-opacity"
+        style={{ background: '#3D5A9E' }}
       >
-        {isSubmitting ? <CircularProgress size={24} /> : "Masuk"}
-      </Button>
+        {isSubmitting ? (
+          <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+        ) : (
+          'Log In'
+        )}
+      </button>
 
-      {!isAdmin && (
-        <>
-          <Divider sx={{ my: 2 }}>
-            <Typography variant="body2" color="text.secondary">
-              atau
-            </Typography>
-          </Divider>
-
-          <Button
-            variant="outlined"
-            fullWidth
-            size="large"
-            startIcon={isGoogleLoading ? <CircularProgress size={20} /> : <GoogleIcon />}
-            onClick={handleGoogleSignIn}
-            disabled={isGoogleLoading}
-          >
-            Masuk dengan Google
-          </Button>
-        </>
-      )}
-    </Box>
+      {!isAdmin && <input type="hidden" name="isAdmin" value="false" />}
+    </form>
   );
 }

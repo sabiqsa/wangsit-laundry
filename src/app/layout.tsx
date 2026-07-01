@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { AppProviders } from "@/components/providers/AppProviders";
-import { Navbar } from "@/components/ui/Navbar";
+import { BottomNav } from "@/components/ui/BottomNav";
+import { ContentWrapper } from "@/components/ui/ContentWrapper";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Wangsit Laundry",
@@ -29,8 +31,8 @@ export default function RootLayout({
     <html lang="id">
       <body suppressHydrationWarning>
         <AppProviders>
-          <Navbar />
-          {children}
+          <BottomNav />
+          <ContentWrapper>{children}</ContentWrapper>
         </AppProviders>
       </body>
     </html>

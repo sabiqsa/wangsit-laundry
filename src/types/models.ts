@@ -1,6 +1,6 @@
 export type UserRole = "admin" | "client";
 export type OrderService = "cuciLipat" | "setrika" | "cuciSetrika";
-export type OrderStatus = "Pending" | "Proses" | "Selesai" | "Lunas";
+export type OrderStatus = "Pending" | "Proses" | "Selesai" | "Lunas" | "Dibatalkan";
 export type PaymentStatus = "unpaid" | "paid" | "pending";
 export type PaymentMethod = "bayar_sekarang" | "bayar_nanti";
 export type DeliveryType = "jemput_antar" | "ambil_sendiri";
@@ -95,7 +95,8 @@ export const SERVICE_LABELS: Record<OrderService, string> = {
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   Pending: "Menunggu",
-  Proses: "Sedang Diproses",
+  Proses: "Diproses",
   Selesai: "Selesai",
-  Lunas: "Lunas",
+  Lunas: "Selesai",
+  Dibatalkan: "Dibatalkan",
 };

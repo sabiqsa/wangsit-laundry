@@ -21,7 +21,7 @@ export async function PATCH(
     const { id } = await params;
     const { orderStatus, paymentStatus } = await req.json();
 
-    const validOrderStatuses = ["Pending", "Proses", "Selesai", "Lunas"];
+    const validOrderStatuses = ["Pending", "Proses", "Selesai", "Lunas", "Dibatalkan"];
     if (orderStatus && !validOrderStatuses.includes(orderStatus)) {
       return NextResponse.json(
         { success: false, error: "Status tidak valid" },
